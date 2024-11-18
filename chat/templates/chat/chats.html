@@ -62,6 +62,7 @@
 
             chatSocket.onmessage = async function (e) {
                 const data = JSON.parse(e.data);
+                console.log(data);
                 const suffix = data.from === 'room' ? '' : ' You';
                 document.querySelector('#chat-text').value += suffix + ' : '
                     + data.message + '\n';

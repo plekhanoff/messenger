@@ -24,7 +24,7 @@ class Message(models.Model):
 
 class UserProfile(User):
     avatar = models.FileField(upload_to='avatar/', blank=True, null=True, default='default.png')
-    user = models.OneToOneField(User,related_name='пользователь', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
    
     def get_absolute_url(self):
         return reverse('user-detail', args=[str(self.id)])
