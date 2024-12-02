@@ -147,17 +147,7 @@
                 document.getElementById('connections').insertAdjacentHTML('beforeend', userMessageInput);
             }
 
-            {% comment %} function usersOfRoom (userDict) {
-                if (userDict != 0) {
-                    document.querySelector('#users-in-room').innerHTML = '';
-                }
-                for (let u in userDict) {
-                    tagU = u.split('!')[1];
-                    roomUser = `<p id="p-` + tagU + `"><button type="button" id="` + tagU + `" onClick="writeToUser('`
-                        + u + `', '` + userDict[u] + `')">` + userDict[u] + `</button></p>`;
-                    document.querySelector('#users-in-room').insertAdjacentHTML('beforeend', roomUser);
-                }
-            }; {% endcomment %}
+            
             function usersOfRoom(userDict) {
                 const usersInRoomElement = document.querySelector('#users-in-room');
              if (!usersInRoomElement) {
