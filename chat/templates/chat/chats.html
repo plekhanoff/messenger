@@ -9,9 +9,12 @@
         <div class="container">
             <form id="chat-form">
                 <div class="form-group">
+                    {% if user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="logo-image"
+                        style="float: left; width: 100px; height: 100px; border-radius: 15px;">
+                    {% endif %}
                     <br>
-                    
-                    <h3>Комната"{{ room_name }}"</h3><br>
+                    <h3>Комната "{{ room_name }}"</h3><br>
                     <textarea class="form-control" id="chat-text" readonly rows="10"></textarea><br>
                 </div>
                 <div class="form-group">
@@ -22,14 +25,12 @@
                     <input class="btn btn-primary" id="chat-message-submit" type="button"
                            style="width: 65%;" value="Отправить"/>&nbsp;
                     <input class="btn btn-primary" id="leave-room-submit" type="button"
-                           style="width: 33%;" value="Покинуть комнату"/>
+                           style="width: 33%;" value="Выйти"/>
                 </div><br>
-                <p>***</p>
-                <p>Послать личное сообщение участнику из списка ниже:</p>
+            </form>
+                <p>Пользователи в комнате "{{ room_name }}":</p>
                 <div id="connections"></div>
-                <p>***</p>
-                <p>Пользователи в комнате: "{{ room_name }}":</p>
-                <div id="users-in-room">Никого</div>
+                <div id="users-in-room"></div>
             </form>
         </div>
 
@@ -66,8 +67,9 @@
                 const suffix = data.from === 'room' ? '' : ' You';
                 document.querySelector('#chat-text').value += suffix + ' : '
                     + data.message + '\n';
-                scrollToBottom();
+                scrollToBottom();              
                 await usersOfRoom(data.usernames);
+               
             };
 
 
@@ -145,7 +147,7 @@
                 document.getElementById('connections').insertAdjacentHTML('beforeend', userMessageInput);
             }
 
-            function usersOfRoom (userDict) {
+            {% comment %} function usersOfRoom (userDict) {
                 if (userDict != 0) {
                     document.querySelector('#users-in-room').innerHTML = '';
                 }
@@ -155,10 +157,28 @@
                         + u + `', '` + userDict[u] + `')">` + userDict[u] + `</button></p>`;
                     document.querySelector('#users-in-room').insertAdjacentHTML('beforeend', roomUser);
                 }
-            };
+            }; {% endcomment %}
+            function usersOfRoom(userDict) {
+                const usersInRoomElement = document.querySelector('#users-in-room');
+             if (!usersInRoomElement) {
+                    console.error("Element with ID 'users-in-room' not found.");
+                    return; 
+                } 
+            
+                if (userDict != 0) {
+                    usersInRoomElement.innerHTML = ''; 
+                }
+            
+                for (let u in userDict) {
+                    const tagU = u.split('!')[1];
+                    const roomUser = `
+                        <p id="p-${tagU}">
+                            <button type="button" id="${tagU}" onClick="writeToUser('${u}', '${userDict[u]}')">${userDict[u]}</button>
+                        </p>`;
+                    usersInRoomElement.insertAdjacentHTML('beforeend', roomUser);
+                }
+            }
 
-            
-            
         </script>
     {% else %}
         <h2>Войдите или зарегистрируйтесь</h2>

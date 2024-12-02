@@ -22,6 +22,7 @@ ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[8000]']
 INSTALLED_APPS = [
     'daphne',
     'chat',
+    'private_chat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -151,6 +152,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [ "http://localhost 127.0.0.1:8000" ]
+CORS_ALLOWED_ORIGINS = ["http://localhost 127.0.0.1:8000"]
 
 

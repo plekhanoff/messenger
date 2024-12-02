@@ -4,12 +4,11 @@ from django.urls import reverse
 
 
 class Chat(models.Model):
+    name = models.CharField(max_length=255, unique=True) 
     users = models.ManyToManyField(User, related_name='chats')
-    chat_name = models.CharField(max_length=255,default = None)
-    members = models.ManyToManyField(User, related_name='chat_groups')
 
     def __str__(self):
-        return self.chat_name
+        return self.name
     
 
 class Message(models.Model):

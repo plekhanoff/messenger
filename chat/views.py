@@ -9,13 +9,13 @@ from .forms import SignUpForm, UserProfileForm
 from django.contrib.auth import authenticate, login
 from django.core.cache.backends.locmem import _caches as cache
 from django.contrib.auth import logout
-from .models import UserProfile
 from .serializers import UserProfileSerializer
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import UserProfile
 from .serializers import UserProfileSerializer
 from .forms import UserProfileForm
+
 
 
 
@@ -43,18 +43,24 @@ def logout_view(request):
 def index(request):
     return render(request, "chat/index.html")
 
-
 def room(request, room_name):
     return render(request, "chat/chats.html", {"room_name": room_name})
+
 
 class ChatViewSet(viewsets.ModelViewSet):
     queryset = Chat.objects.all()
     serializer_class = ChatSerializer
     
-    def perform_create(self, serializer):
-        instance = serializer.save()
-        instance.members.add(self.request.user)
-        instance.save()
+    def room_detail(request, room_name):
+       room = Chat.objects.get(name=room_name)
+       users_in_room = room.users.all() 
+       context = {
+           'room_name': room_name,
+           'users_in_room': users_in_room
+       }
+       return render(request, 'chats.html', context)
+   
+   
         
 
 class MessageViewSet(viewsets.ModelViewSet):
