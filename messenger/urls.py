@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from chat.views import ChatViewSet, MessageViewSet, index, logout_view
-from private_chat.views import chat_box
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -21,7 +20,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', index, name='index'), 
     path('logout/', logout_view, name='logout'),
-    path("private_chat/<str:chat_box_name>/", chat_box, name="chat"),
 ]
 
 if settings.DEBUG:
